@@ -1,0 +1,63 @@
+---
+title: "P9"
+author: "Steph Bossert"
+date: "5/11/2021"
+output: html_document
+---
+
+```{r data and packages}
+library(tidyverse) 
+library(tidymodels)
+library(viridis)
+library(openintro)
+library(haven)
+library(haven)
+HW1_data_copy <- read_sav("~/Desktop/HW1_data copy.sav")
+View(HW1_data_copy)
+HW1_data<- HW1_data_copy
+```
+
+
+#We are going to do a homework problem set but through R (originally ran through SPSS)
+```{r data}
+view(HW1_data)
+#8 variables GPA and IQ as well as motivation level
+```
+
+
+
+#Run sinple regression- predict GPA from IQ
+```{r regression}
+m_IQ=lm(GPA~IQ, data = HW1_data) #Create the linear regression
+summary(m_IQ)
+
+H = HW1_data; plot( H$IQ, H$GPA )
+lmSimple <- lm( GPA ~ IQ, data = HW1_data )
+abline( lmSimple )
+
+#plot
+ggplot(HW1_data, aes(x=IQ, y=GPA)) + 
+  geom_point(shape=18, color="blue")+
+  geom_smooth(method=lm, se=FALSE, linetype="solid",
+             color="white")
+```
+
+
+#interpret results: IQ accounts for 2.1% of variance in GPA
+
+#Multiple regression
+```{r mr}
+linear_reg() %>%
+ set_engine("lm") %>%
+  fit(GPA ~ IQ + Mot, data = HW1_data) %>%
+  tidy()
+```
+
+#Interpret: MOT account for much more of the variance in GPA than IQ does. If two people have the same IQ, a one point increase in MOT is assocaited with a .87 increase in GPA. 
+
+###Write the model:
+# -1.75 + .007(IQ) + .87(Mot)
+
+
+
+
